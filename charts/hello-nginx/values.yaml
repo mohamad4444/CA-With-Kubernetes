@@ -1,0 +1,53 @@
+# charts/hello-nginx/values.yaml
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.25.3"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/issuer: "ca-issuer"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: hello.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - hello.local
+      secretName: hello-local-tls-secret
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+customHTML: |
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <title>Hello from Nginx!</title>
+      <style>
+          body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+          h1 { color: #333; }
+      </style>
+  </head>
+  <body>
+      <h1>🚀 Hello from Nginx!</h1>
+      <p>Secured with HTTPS via Helmfile!</p>
+  </body>
+  </html>

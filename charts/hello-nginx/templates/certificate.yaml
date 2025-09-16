@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-local-tls
+  namespace: default
+spec:
+  secretName: hello-local-tls-secret
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+  commonName: hello.local
+  dnsNames:
+  - hello.local
+  - www.hello.local

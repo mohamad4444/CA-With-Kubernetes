@@ -1,0 +1,25 @@
+releases:
+# cert-manager itself
+- name: cert-manager
+  namespace: cert-manager
+  createNamespace: true
+  version: v1.18.2
+  chart: oci://quay.io/jetstack/charts/cert-manager
+  verify: true
+  keyring: ./cert-manager-keyring-2021-09-20-1020CF3C033D4F35BAE1C19E1226061C665DF13E.gpg
+  values:
+  - crds:
+      enabled: true
+- name: ca-issuer-setup
+  namespace: cert-manager
+  chart: ./charts/ca-issuer # We'll create this chart
+  needs:
+  - cert-manager/cert-manager
+
+# Your hello-nginx application
+- name: hello-nginx
+  namespace: default
+  chart: ./charts/hello-nginx
+  needs:
+  - cert-manager/cert-manager
+  - cert-manager/ca-issuer-setup
