@@ -1,14 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: hello-local-tls
-  namespace: default
+  name: hello-tls
+  namespace: default     # <- same namespace as ingress
 spec:
-  secretName: hello-local-tls-secret
-  issuerRef:
-    name: ca-issuer
-    kind: Issuer
-  commonName: hello.local
+  secretName: hello-local-tls-secret # <- must match ingress.spec.tls.secretName
   dnsNames:
-  - hello.local
-  - www.hello.local
+    - hello.local
+  issuerRef:
+    name: my-ca-issuer
+    kind: ClusterIssuer

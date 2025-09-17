@@ -1,34 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-hello-nginx
+  name: hello-nginx
   labels:
-    app: {{ .Release.Name }}-hello-nginx
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: hello-nginx
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-hello-nginx
+      app: hello-nginx
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-hello-nginx
+        app: hello-nginx
     spec:
       containers:
         - name: nginx
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: nginx:1.25.3
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: html-content
-              mountPath: /usr/share/nginx/html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
       volumes:
         - name: html-content
           configMap:
-            name: {{ .Release.Name }}-html-content
+            name: hello-nginx-html

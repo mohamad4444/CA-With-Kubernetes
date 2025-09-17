@@ -10,16 +10,18 @@ releases:
   values:
   - crds:
       enabled: true
-- name: ca-issuer-setup
-  namespace: cert-manager
-  chart: ./charts/ca-issuer # We'll create this chart
-  needs:
-  - cert-manager/cert-manager
 
-# Your hello-nginx application
-- name: hello-nginx
-  namespace: default
-  chart: ./charts/hello-nginx
-  needs:
-  - cert-manager/cert-manager
-  - cert-manager/ca-issuer-setup
+# # Your CA setup resources
+# - name: ca-issuer
+#   namespace: cert-manager #probably extra as it is a cluster issuer
+#   chart: ./charts/ca-issuer
+#   needs:
+#   - cert-manager/cert-manager
+
+# # Your hello-nginx application
+# - name: hello-nginx
+#   namespace: default
+#   chart: ./charts/hello-nginx
+#   needs:
+#   - cert-manager/cert-manager
+#   - cert-manager/ca-issuer

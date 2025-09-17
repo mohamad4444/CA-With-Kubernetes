@@ -1,12 +1,26 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-html-content
+  name: hello-nginx-html          # Name of the ConfigMap
   labels:
-    app: {{ .Release.Name }}-hello-nginx
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    labels:
+    app: hello-nginx
+    release: hello-release
+    # app: hello-nginx-hello        # Label to identify the application
+    # chart: hello-nginx-1.0.0      # Optional label to track chart version (if relevant)
+    # release: hello-release        # Label to identify a release (optional)
+    # heritage: helm                # Label to indicate this was created via Helm (optional)
 data:
+  # The key is the filename that will appear in the container when mounted as a volume
+  # The value is the HTML content for your page
   index.html: |
-    {{ .Values.customHTML | nindent 4 }}
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Hello Nginx</title>
+      </head>
+      <body>
+        <h1>Welcome to Hello Nginx!</h1>
+        <p>This is a static HTML page served by Nginx.</p>
+      </body>
+    </html>
