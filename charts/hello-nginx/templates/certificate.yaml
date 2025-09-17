@@ -4,6 +4,7 @@ metadata:
   name: hello-tls
   namespace: default     # <- same namespace as ingress
 spec:
+  commonName: hello.local
   secretName: hello-local-tls-secret # <- must match ingress.spec.tls.secretName
   dnsNames:
     - hello.local
